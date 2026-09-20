@@ -39,22 +39,22 @@ public class UrlService
     }
     public async Task<Url?> GetByShortCodeAsync(string shortCode)
     {
-        var cachedUrlJson = await _cache.StringGetAsync(shortCode);
-        if (cachedUrlJson.HasValue)
-        {
-            _logger.LogInformation("Cache Hit for {shortCode}", shortCode);
-            var cachedUrl = JsonSerializer.Deserialize<CachedUrlDto>(cachedUrlJson);
-            if (cachedUrl is not null)
-            {
-                return new Url
-                {
-                    UrlId = cachedUrl.UrlId,
-                    ShortCode = shortCode,
-                    OriginalUrl = cachedUrl.OriginalUrl
-                };
-            }
-        }
-        _logger.LogInformation("Cache Miss for {shortCode}", shortCode);
+        // var cachedUrlJson = await _cache.StringGetAsync(shortCode);
+        // if (cachedUrlJson.HasValue)
+        // {
+        //     _logger.LogInformation("Cache Hit for {shortCode}", shortCode);
+        //     var cachedUrl = JsonSerializer.Deserialize<CachedUrlDto>(cachedUrlJson);
+        //     if (cachedUrl is not null)
+        //     {
+        //         return new Url
+        //         {
+        //             UrlId = cachedUrl.UrlId,
+        //             ShortCode = shortCode,
+        //             OriginalUrl = cachedUrl.OriginalUrl
+        //         };
+        //     }
+        // }
+         _logger.LogInformation("Cache Miss for {shortCode}", shortCode);
         var url = await _context.Urls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);
         if (url is not null)
         {
