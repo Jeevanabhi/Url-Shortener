@@ -1,7 +1,7 @@
 public class Url
 {
     public int UrlId { get; set; }
-    public required string ShortCode { get; set; }
+    public  string ? ShortCode { get; set; }
     public required string OriginalUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? ExpiresAt { get; set; }

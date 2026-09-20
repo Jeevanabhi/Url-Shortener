@@ -68,7 +68,6 @@ namespace UrlShortener.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("ShortCode")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("UrlId");

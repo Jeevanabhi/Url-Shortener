@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 public class GetController : ControllerBase
 {
     private readonly UrlService _urlService;
-    public GetController(UrlService urlService)
+    private readonly RabbitMqPublisher _publisher;
+    public GetController(UrlService urlService,RabbitMqPublisher publisher)
     {
         _urlService = urlService;
+        _publisher = publisher;
     }
     [HttpGet("/{shortCode}")]
     public async Task<IActionResult> RedirectToOriginal(string shortCode)
@@ -18,8 +20,15 @@ public class GetController : ControllerBase
             return NotFound();
         }
     var referrer = Request.Headers["Referer"].ToString();
-    var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-       await _urlService.LogClicks(url.UrlId, referrer, ipAddress);
+        var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var click = new ClickEvent
+        {
+            UrlId = url.UrlId,
+            Referrer = referrer,
+            IpAddress = ipAddress,
+            ClickedAt = DateTime.UtcNow
+        };
+        await _publisher.PublishAsync(click);
     return Redirect(url.OriginalUrl);
 }
 }

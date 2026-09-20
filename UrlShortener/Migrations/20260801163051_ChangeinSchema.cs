@@ -9,43 +9,24 @@ namespace UrlShortener.Migrations
     public partial class ChangeinSchema : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Clicks_Urls_UrlId",
-                table: "Clicks");
+       protected override void Up(MigrationBuilder migrationBuilder)
+{
+    migrationBuilder.Sql("""
+        ALTER TABLE `Urls`
+        DROP PRIMARY KEY,
+        DROP COLUMN `Id`,
+        MODIFY COLUMN `UrlId` int NOT NULL AUTO_INCREMENT,
+        ADD PRIMARY KEY (`UrlId`);
+        """);
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Urls",
-                table: "Urls");
-
-            migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Urls");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "UrlId",
-                table: "Urls",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int")
-                .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Urls",
-                table: "Urls",
-                column: "UrlId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Clicks_Urls_UrlId",
-                table: "Clicks",
-                column: "UrlId",
-                principalTable: "Urls",
-                principalColumn: "UrlId",
-                onDelete: ReferentialAction.Cascade);
-        }
-
+    migrationBuilder.AddForeignKey(
+        name: "FK_Clicks_Urls_UrlId",
+        table: "Clicks",
+        column: "UrlId",
+        principalTable: "Urls",
+        principalColumn: "UrlId",
+        onDelete: ReferentialAction.Cascade);
+}
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ClickWorker/ClickWorker.csproj" />
+  <Project Path="UrlShortener/UrlShortener.csproj" />
+</Solution>
